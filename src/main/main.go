@@ -5,16 +5,17 @@ import (
 )
 
 func main() {
-	elementsNumString := readNumberOfElements()
+	elementsNumString := *readNumberOfElements()
 	fmt.Print(elementsNumString)
 }
 
-func readNumberOfElements() (numberOfElements int) {
+func readNumberOfElements() *int {
+	var numberOfElements int
 	for {
 		fmt.Println("Number of list elements: ")
 		_, err := fmt.Scan(&numberOfElements)
 		if err == nil{
-			return
+			return &numberOfElements
 		} else {
 			fmt.Printf("Error reading input (%v), please try again\r\n", err)
 		}
