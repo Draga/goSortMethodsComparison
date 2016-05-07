@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sortMethods"
 )
 
 func main() {
@@ -9,10 +10,20 @@ func main() {
 	fmt.Print(listLength)
 
 	order := readOrderMethod();
-	fmt.Print(order)
+	fmt.Println(order)
 
 	list, err := generateList(listLength, order)
-	fmt.Print(list, err)
+	fmt.Println(list, err)
+	if err != nil{
+		fmt.Printf("Error generating list (%v)", err)
+		return
+	}
+
+	sortedList, checkCount ,swapCount := sortMethods.SelectSort(*list)
+
+	fmt.Println(sortedList)
+	fmt.Println(checkCount)
+	fmt.Println(swapCount)
 }
 
 func readListLength() *uint32 {
