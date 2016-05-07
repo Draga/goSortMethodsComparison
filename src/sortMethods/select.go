@@ -14,5 +14,6 @@ func SelectSort(list []uint32) (sortedList *[]uint32, checkCount uint, swapCount
 		swap(&list[i], &list[minIndex])
 	}
 
-	return &list, checkCount, swapCount
+	sortedList = &list
+	return
 }

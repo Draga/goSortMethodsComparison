@@ -24,6 +24,12 @@ func main() {
 	fmt.Println(sortedList)
 	fmt.Println(checkCount)
 	fmt.Println(swapCount)
+
+	sortedList, checkCount ,swapCount = sortMethods.InsertSort(*list)
+
+	fmt.Println(sortedList)
+	fmt.Println(checkCount)
+	fmt.Println(swapCount)
 }
 
 func readListLength() *uint32 {
