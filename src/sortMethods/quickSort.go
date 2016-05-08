@@ -1,6 +1,6 @@
 package sortMethods
 
-func QuickSort(list []uint32) (checkCount uint, swapCount uint) {
+func QuickSort(list []uint32) (checkCount uint64, swapCount uint64) {
 	var start uint
 	end := uint(len(list))
 
@@ -9,7 +9,7 @@ func QuickSort(list []uint32) (checkCount uint, swapCount uint) {
 	return
 }
 
-func quickSort(list []uint32, start uint, end uint, checkCount *uint, swapCount *uint) {
+func quickSort(list []uint32, start uint, end uint, checkCount *uint64, swapCount *uint64) {
 	var pivot uint
 
 	*checkCount++;
@@ -29,7 +29,7 @@ func quickSort(list []uint32, start uint, end uint, checkCount *uint, swapCount 
 	return
 }
 
-func getPivot(list *[]uint32, start uint, end uint, swapCount *uint) uint {
+func getPivot(list *[]uint32, start uint, end uint, swapCount *uint64) uint {
 	i := start
 	j := end
 	pivot := (*list)[start]

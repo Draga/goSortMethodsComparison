@@ -1,6 +1,6 @@
 package sortMethods
 
-type SortFunc func ([]uint32) (uint, uint)
+type SortFunc func (list []uint32) (checkCount uint64, swapCount uint64)
 
 func swap(a *uint32, b *uint32) {
 	tmp := *a;

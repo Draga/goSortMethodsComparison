@@ -1,6 +1,6 @@
 package sortMethods
 
-func SelectSort(list []uint32) (checkCount uint, swapCount uint) {
+func SelectSort(list []uint32) (checkCount uint64, swapCount uint64) {
 	var minIndex int
 	for i := 0; i < len(list) - 1; i++ {
 		minIndex = i;
