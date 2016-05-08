@@ -5,6 +5,7 @@ import (
 	"sortMethods"
 	"runtime"
 	"reflect"
+	"time"
 )
 
 func main() {
@@ -67,11 +68,13 @@ func benchmark(sortFunc sortMethods.SortFunc, list *[]uint32) {
 	listCopy := make([]uint32, len(*list))
 	copy(listCopy, *list)
 
+	startTime := time.Now()
 	checkCount, swapCount := sortFunc(listCopy)
+	elapsed := time.Since(startTime)
 
 	fmt.Println()
 	fmt.Println(GetFunctionName(sortFunc))
-	fmt.Println(listCopy)
+	fmt.Println("Duration: ", elapsed)
 	fmt.Println("Checks: ", checkCount)
 	fmt.Println("Swaps: ", swapCount)
 }
