@@ -19,11 +19,24 @@ func main() {
 		return
 	}
 
-	fmt.Println("List to order: ", list)
+	println("List to order: ", list)
 
-	benchmark(sortMethods.SelectSort, list)
-	benchmark(sortMethods.InsertSort, list)
-	benchmark(sortMethods.QuickSort, list)
+	sortFunctions := []sortMethods.SortFunc{
+		sortMethods.SelectSort,
+		sortMethods.InsertSort,
+		sortMethods.QuickSort,
+	}
+
+	resultChan := make(chan string)
+
+	for _, sortFunc := range sortFunctions {
+		go benchmark(sortFunc, list, resultChan)
+	}
+
+	for i := 0; i < len(sortFunctions); i++ {
+		println()
+		println(<-resultChan)
+	}
 }
 
 func readListLength() *uint32 {
@@ -42,10 +55,10 @@ func readListLength() *uint32 {
 func readOrderMethod() ListOrder {
 	var orderMethodSelection uint
 	for {
-		fmt.Println("Choose the order of the elements in the list:")
-		fmt.Println("1) Ordered (1,2,3...)")
-		fmt.Println("2) Inverse (3,2,1...)")
-		fmt.Println("3) Random (2,3,1...)")
+		println("Choose the order of the elements in the list:")
+		println("1) Ordered (1,2,3...)")
+		println("2) Inverse (3,2,1...)")
+		println("3) Random (2,3,1...)")
 		_, err := fmt.Scan(&orderMethodSelection)
 		if err == nil {
 			switch orderMethodSelection {
@@ -64,7 +77,7 @@ func readOrderMethod() ListOrder {
 	}
 }
 
-func benchmark(sortFunc sortMethods.SortFunc, list *[]uint32) {
+func benchmark(sortFunc sortMethods.SortFunc, list *[]uint32, resultChan chan string) {
 	listCopy := make([]uint32, len(*list))
 	copy(listCopy, *list)
 
@@ -72,11 +85,13 @@ func benchmark(sortFunc sortMethods.SortFunc, list *[]uint32) {
 	checkCount, swapCount := sortFunc(listCopy)
 	elapsed := time.Since(startTime)
 
-	fmt.Println()
-	fmt.Println(GetFunctionName(sortFunc))
-	fmt.Println("Duration: ", elapsed)
-	fmt.Println("Checks: ", checkCount)
-	fmt.Println("Swaps: ", swapCount)
+	var result string
+	result += fmt.Sprintln(GetFunctionName(sortFunc))
+	result += fmt.Sprintln("Duration: ", elapsed)
+	result += fmt.Sprintln("Checks: ", checkCount)
+	result += fmt.Sprintln("Swaps: ", swapCount)
+
+	resultChan <- result
 }
 
 func GetFunctionName(function interface{}) string {
