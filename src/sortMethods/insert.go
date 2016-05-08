@@ -1,6 +1,6 @@
 package sortMethods
 
-func InsertSort(list []uint32) (sortedList *[]uint32, checkCount uint, swapCount uint) {
+func InsertSort(list []uint32) (checkCount uint, swapCount uint) {
 	var next uint32
 	var j int
 
@@ -14,6 +14,5 @@ func InsertSort(list []uint32) (sortedList *[]uint32, checkCount uint, swapCount
 		list[j + 1] = next;
 	}
 
-	sortedList = &list
 	return
 }

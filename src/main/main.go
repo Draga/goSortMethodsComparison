@@ -3,33 +3,26 @@ package main
 import (
 	"fmt"
 	"sortMethods"
+	"runtime"
+	"reflect"
 )
 
 func main() {
 	listLength := *readListLength()
-	fmt.Print(listLength)
 
 	order := readOrderMethod();
-	fmt.Println(order)
 
 	list, err := generateList(listLength, order)
-	fmt.Println(list, err)
-	if err != nil{
+	if err != nil {
 		fmt.Printf("Error generating list (%v)", err)
 		return
 	}
 
-	sortedList, checkCount ,swapCount := sortMethods.SelectSort(*list)
+	fmt.Println("List to order: ", list)
 
-	fmt.Println(sortedList)
-	fmt.Println(checkCount)
-	fmt.Println(swapCount)
-
-	sortedList, checkCount ,swapCount = sortMethods.InsertSort(*list)
-
-	fmt.Println(sortedList)
-	fmt.Println(checkCount)
-	fmt.Println(swapCount)
+	benchmark(sortMethods.SelectSort, list)
+	benchmark(sortMethods.InsertSort, list)
+	benchmark(sortMethods.QuickSort, list)
 }
 
 func readListLength() *uint32 {
@@ -37,7 +30,7 @@ func readListLength() *uint32 {
 	for {
 		fmt.Println("Size of list elements:")
 		_, err := fmt.Scan(&numberOfElements)
-		if err == nil{
+		if err == nil {
 			return &numberOfElements
 		} else {
 			fmt.Printf("Error reading input (%v), please try again\r\n", err)
@@ -53,7 +46,7 @@ func readOrderMethod() ListOrder {
 		fmt.Println("2) Inverse (3,2,1...)")
 		fmt.Println("3) Random (2,3,1...)")
 		_, err := fmt.Scan(&orderMethodSelection)
-		if err == nil{
+		if err == nil {
 			switch orderMethodSelection {
 			case 1:
 				return ordered
@@ -68,4 +61,21 @@ func readOrderMethod() ListOrder {
 			fmt.Printf("Error reading input (%v), please try again\r\n", err)
 		}
 	}
+}
+
+func benchmark(sortFunc sortMethods.SortFunc, list *[]uint32) {
+	listCopy := make([]uint32, len(*list))
+	copy(listCopy, *list)
+
+	checkCount, swapCount := sortFunc(listCopy)
+
+	fmt.Println()
+	fmt.Println(GetFunctionName(sortFunc))
+	fmt.Println(listCopy)
+	fmt.Println("Checks: ", checkCount)
+	fmt.Println("Swaps: ", swapCount)
+}
+
+func GetFunctionName(function interface{}) string {
+	return runtime.FuncForPC(reflect.ValueOf(function).Pointer()).Name()
 }
